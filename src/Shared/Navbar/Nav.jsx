@@ -66,26 +66,33 @@ const Nav = () => {
             isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
           }
         >
-          <a  className="link">
+          <Link to={"/"} className="link">
             <span className="mask">
               <div className="link-container">
                 <span className="link-title1 title">Home</span>
                 <span className="link-title2 title">Home</span>
               </div>
             </span>
-          </a>
+          </Link>
 
         </NavLink>
       </Typography>
 
       <Typography as="li" className="p-1 font-normal gro">
         <NavLink
-          to={"/addSchool"}
+          to={'/add'}
           className={({ isActive, isPending }) =>
             isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
           }
         >
-          Add School
+          <Link to={"/add"} className="link">
+            <span className="mask">
+              <div className="link-container">
+                <span className="link-title1 title">Add</span>
+                <span className="link-title2 title">Add</span>
+              </div>
+            </span>
+          </Link>
         </NavLink>
       </Typography>
 
@@ -96,7 +103,14 @@ const Nav = () => {
             isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
           }
         >
-          Contact Us
+          <Link to={"/contact-us"} className="link">
+            <span className="mask">
+              <div className="link-container">
+                <span className="link-title1 title">Contact Us</span>
+                <span className="link-title2 title">Contact Us</span>
+              </div>
+            </span>
+          </Link>
         </NavLink>
       </Typography>
     </ul>
