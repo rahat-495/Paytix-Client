@@ -72,7 +72,7 @@
 }
 
 .link-title2 {
-  font-weight: bold;
+  font-weight: 600;
   transform-origin: left center;
   transform: rotate(30deg);
 }

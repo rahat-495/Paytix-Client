@@ -1,3 +1,4 @@
+
 import {
   Navbar,
   MobileNav,
@@ -8,10 +9,15 @@ import {
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
+import NavLinks from "../../Components/NavLinks/NavLinks";
 
 const Nav = () => {
+
   const { user , logOut } = useAuth();
   const [openNav, setOpenNav] = useState(false);
+  const [dropdown , setDropDown] = useState(false) ;
+  
 
   useEffect(() => {
     window.addEventListener(
@@ -19,43 +25,6 @@ const Nav = () => {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
-
-  // const navList = (
-  //   <ul className="mt-2 gro mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-  //     <Typography as="li" id="style-2" className="p-1 font-normal gro">
-  //       <NavLink
-  //         to={"/"}
-  //         className={({ isActive, isPending }) =>
-  //           isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
-  //         }
-  //       >
-  //         Home
-  //       </NavLink>
-  //     </Typography>
-
-  //     <Typography as="li" id="style-2" className="p-1 font-normal gro">
-  //       <NavLink
-  //         to={"/addSchool"}
-  //         className={({ isActive, isPending }) =>
-  //           isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
-  //         }
-  //       >
-  //         Add School
-  //       </NavLink>
-  //     </Typography>
-
-  //     <Typography as="li" id="style-2" className="p-1 font-normal gro">
-  //       <NavLink
-  //         to={"/contact-us"}
-  //         className={({ isActive, isPending }) =>
-  //           isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
-  //         }
-  //       >
-  //         Contact Us
-  //       </NavLink>
-  //     </Typography>
-  //   </ul>
-  // );
   
   const navList = (
     <ul className="mt-2 gro mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -66,33 +35,31 @@ const Nav = () => {
             isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
           }
         >
-          <Link to={"/"} className="link">
-            <span className="mask">
-              <div className="link-container">
-                <span className="link-title1 title">Home</span>
-                <span className="link-title2 title">Home</span>
-              </div>
-            </span>
-          </Link>
-
+          <NavLinks path={'/'} label={"Home"}/>
         </NavLink>
       </Typography>
 
-      <Typography as="li" className="p-1 font-normal gro">
+      <Typography as="li" onMouseEnter={() => setDropDown(!dropdown)} onMouseLeave={() => setDropDown(!dropdown)} className={`p-1 font-normal gro dropdown dropdown-hover`}>
+
+        <ul tabIndex={0} className="dropdown-content mt-10 menu bg-[#1D232A] rounded-box z-[10] w-52 border flex flex-col gap-3">
+          <Link to={'/add'} className="text-white hover:bg-white hover:text-black gro font-semibold px-3 py-2 rounded-lg">Add School</Link>
+          <Link to={'/addClass'} className="text-white hover:bg-white hover:text-black gro font-semibold px-3 py-2 rounded-lg">Add Class</Link>
+        </ul>
+
         <NavLink
           to={'/add'}
           className={({ isActive, isPending }) =>
             isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
           }
         >
-          <Link to={"/add"} className="link">
-            <span className="mask">
-              <div className="link-container">
-                <span className="link-title1 title">Add</span>
-                <span className="link-title2 title">Add</span>
-              </div>
-            </span>
-          </Link>
+          
+          <div className="flex items-center justify-center gap-1 link mt-2">
+            <NavLinks path={'/add'} label={"Add"}/>
+            {
+              dropdown ? <FaAngleUp /> : <FaAngleDown />
+            }
+          </div>
+
         </NavLink>
       </Typography>
 
@@ -103,14 +70,7 @@ const Nav = () => {
             isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
           }
         >
-          <Link to={"/contact-us"} className="link">
-            <span className="mask">
-              <div className="link-container">
-                <span className="link-title1 title">Contact Us</span>
-                <span className="link-title2 title">Contact Us</span>
-              </div>
-            </span>
-          </Link>
+          <NavLinks path={'/contact-us'} label={"Contact Us"}/>
         </NavLink>
       </Typography>
     </ul>
