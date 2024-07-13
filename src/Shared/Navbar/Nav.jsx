@@ -7,7 +7,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import NavLinks from "../../Components/NavLinks/NavLinks";
@@ -17,7 +17,7 @@ const Nav = () => {
   const { user , logOut } = useAuth();
   const [openNav, setOpenNav] = useState(false);
   const [dropdown , setDropDown] = useState(false) ;
-  
+  const {pathname} = useLocation() ;
 
   useEffect(() => {
     window.addEventListener(
@@ -42,19 +42,19 @@ const Nav = () => {
       <Typography as="li" onMouseEnter={() => setDropDown(!dropdown)} onMouseLeave={() => setDropDown(!dropdown)} className={`p-1 font-normal gro dropdown dropdown-hover`}>
 
         <ul tabIndex={0} className="dropdown-content mt-10 menu bg-[#1D232A] rounded-box z-[10] w-52 border flex flex-col gap-3">
-          <Link to={'/add'} className="text-white hover:bg-white hover:text-black gro font-semibold px-3 py-2 rounded-lg">Add School</Link>
-          <Link to={'/addClass'} className="text-white hover:bg-white hover:text-black gro font-semibold px-3 py-2 rounded-lg">Add Class</Link>
+          <Link to={'/addSchool'} className={`hover:text-black hover:bg-white text-white gro font-semibold px-3 py-2 rounded-lg ${pathname === "/addSchool" && "bg-[#D1D3D6]"}`}>Add School</Link>
+          <Link to={'/addClass'} className={`hover:text-black hover:bg-white text-white gro font-semibold px-3 py-2 rounded-lg ${pathname === "/addClass" && "bg-[#D1D3D6]"}`}>Add Class</Link>
         </ul>
 
         <NavLink
-          to={'/add'}
+          to={'/addSchool'}
           className={({ isActive, isPending }) =>
             isPending ? "pending" : isActive ? "font-semibold underline transition-all ease-in-out duration-300" : ""
           }
         >
           
           <div className="flex items-center justify-center gap-1 link mt-2">
-            <NavLinks path={'/add'} label={"Add"}/>
+            <NavLinks path={'/addSchool'} label={"Add"}/>
             {
               dropdown ? <FaAngleUp /> : <FaAngleDown />
             }
