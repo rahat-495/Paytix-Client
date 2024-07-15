@@ -39,11 +39,11 @@ const Nav = () => {
         </NavLink>
       </Typography>
 
-      <Typography as="li" onMouseEnter={() => setDropDown(!dropdown)} onMouseLeave={() => setDropDown(!dropdown)} className={`p-1 font-normal gro dropdown dropdown-hover`}>
+      <Typography as="li" onMouseEnter={() => setDropDown(!dropdown)} onMouseLeave={() => setDropDown(!dropdown)} className={`p-1 font-normal gro dropdown dropdown-hover ${pathname === '/addClass' && "underline font-semibold"}`}>
 
         <ul tabIndex={0} className="dropdown-content mt-10 menu bg-[#1D232A] rounded-box z-[10] w-52 border flex flex-col gap-3">
-          <Link to={'/addSchool'} className={`hover:text-black hover:bg-white text-white gro font-semibold px-3 py-2 rounded-lg ${pathname === "/addSchool" && "bg-[#D1D3D6]"}`}>Add School</Link>
-          <Link to={'/addClass'} className={`hover:text-black hover:bg-white text-white gro font-semibold px-3 py-2 rounded-lg ${pathname === "/addClass" && "bg-[#D1D3D6]"}`}>Add Class</Link>
+          <Link to={'/addSchool'} className={`gro font-semibold px-3 py-2 rounded-lg ${pathname === "/addSchool" ? "bg-white" : "hover:text-black hover:bg-white text-white"}`}>Add School</Link>
+          <Link to={'/addClass'} className={`gro font-semibold px-3 py-2 rounded-lg ${pathname === "/addClass" ? "bg-white" : "hover:text-black hover:bg-white text-white"}`}>Add Class</Link>
         </ul>
 
         <NavLink
