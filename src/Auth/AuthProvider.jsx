@@ -7,7 +7,6 @@ export const AuthContext = createContext(null) ;
 
 const AuthProvider = ({children}) => {
 
-    // const axiosCommon = useAxiosCommon() ;
     const [user , setUser] = useState(null) ;
     const [loading , setLoading] = useState(true) ;
 

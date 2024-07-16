@@ -7,11 +7,11 @@ const Root = () => {
     return (
         <div className="">
 
-            <div className="sticky top-0 z-50 bg-[#D1D3D6]">
+            <div className="max-w-64 fixed top-0 z-10 px-7 py-10 bg-[#D1D3D6]">
                 <Nav/>
             </div>
 
-            <div className="max-w-[1440px] mx-auto overflow-x-hidden">
+            <div className="">
                 <Outlet/>
             </div>
 

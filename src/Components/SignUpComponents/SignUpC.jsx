@@ -1,75 +1,60 @@
 
-import { CardBody, CardFooter, Checkbox, Input, Typography } from "@material-tailwind/react";
+import {
+  CardBody,
+  CardFooter,
+  Checkbox,
+  Input,
+  Option,
+  Select,
+  Typography,
+} from "@material-tailwind/react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import axios from 'axios' ;
-import useAuth from "../../Hooks/useAuth";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import useAxiosCommon from "../../Hooks/useAxiosCommon";
 
-const key = import.meta.env.VITE_IMAGE_HOISTING_API_KEY;
-const apiUrl = `https://api.imgbb.com/1/upload?key=${key}`;
+const SignUpC = () => {
 
-const SignUpC = ({remember , setRemember}) => {
-
-  const {createUser , setProfile} = useAuth() ;
   const navigate = useNavigate() ;
-  const [eye , setEye] = useState(false) ;
-  const [errorText , setErrorText] = useState('') ;
-  const [passInt, setPassInt] = useState("");
+  const axiosCommon = useAxiosCommon() ;
+  const [errorText, setErrorText] = useState("");
+  const [remember , setRemember] = useState(false) ;
+  const [role , setRole] = useState("user") ;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const form = e.target;
     const name = form.name.value;
-    const image = form.image.files[0];
     const email = form.email.value;
-    const pass = form.password.value;
-    
-    const formData = new FormData();
-    formData.append("image", image);
+    const pin = form.pin.value;
+    const phone = form.phone.value;
+    const info = {
+      pin ,
+      name , 
+      email ,
+      phone ,
+      role ,
+      balance : 0 ,
+      isLogin : false ,
+      userStatus : false ,
+    }
 
-    const { data: imageUrl } = await axios.post(apiUrl, formData, {
-      headers: { "content-type": "multipart/form-data" },
-    });
-
-    if (remember && imageUrl?.success) {
-      if (passInt.length >= 6) {
-        if (/[!@#$%^&*(),.?":{}|<>]/.test(passInt)) {
-          if (/[a-z]/.test(passInt) && /[A-Z]/.test(passInt)) {
-            createUser(email, pass)
-              .then((result) => {
-                console.log(result.user);
-                toast.success("Register Success Fully !");
-                form.reset();
-
-                setTimeout(() => {
-                  navigate("/");
-                }, 1000);
-
-                setProfile(name, imageUrl?.data?.display_url);
-              })
-              .catch((error) => {
-                console.log(error.message);
-                if (
-                  error.message.includes(
-                    "Firebase: Error (auth/email-already-in-use)."
-                  )
-                ) {
-                  toast.error("This Email Already in Use !");
-                }
-              });
-          } else {
-            toast.warning(
-              "Your Password Have UpperCase or LowerCase Charecter's !"
-            );
+    if (remember) {
+      const {data} = await axiosCommon.post('/register' , info) ;
+      if(data?.insertedId){
+        const {data} = await axiosCommon.post('/jwt' , {email}) ;
+        localStorage.setItem("token" , data?.token) ;
+        toast.success("Register SuccessFully !") ;
+        setTimeout(() => {
+          navigate('/') ;
+          if(data?.token){
+            window.location.reload() ;
           }
-        } else {
-          toast.warning("Your password must have a specail charecter !");
-        }
-      } else {
-        toast.warning("Your Password must have 6 Charecter's !");
+        } , 1000)
+      }
+      else if(!data?.success){
+        toast.warning("Account Already Axist, plz Login !")
       }
     } else {
       setErrorText("Please Accept Our Turms & Condition !");
@@ -79,66 +64,61 @@ const SignUpC = ({remember , setRemember}) => {
   return (
     <div>
       <CardBody className="flex flex-col px-0 gap-4">
-      <form onSubmit={handleSubmit} className="gap-3 flex flex-col">
-            <Input className="h-full" required type="text" name="name" label="Name" size="lg" />
+        <form onSubmit={handleSubmit} className="gap-3 flex flex-col">
+          <Input
+            className="h-full"
+            required
+            type="text"
+            name="name"
+            label="Name"
+            size="lg"
+          />
 
-            <Input required type="email" name="email" label="Email" size="lg" />
+          <Input required type="email" name="email" label="Email" size="lg" />
+          <Input required type="number" min={0} name="phone" label="Mobile" size="lg" />
 
-            <div className="relative">
-              {eye ? (
-                <IoMdEyeOff
-                  onClick={() => setEye(!eye)}
-                  className="cursor-pointer text-2xl absolute z-10 top-[10px] right-2"
-                />
-              ) : (
-                <IoMdEye
-                  onClick={() => setEye(!eye)}
-                  className="cursor-pointer text-2xl absolute z-10 top-[10px] right-2"
-                />
-              )}
-                <Input
-                  className="z-0"
-                  onChange={(e) => setPassInt(e.target.value)}
-                  type={eye ? "text" : "password"}
-                  name="password"
-                  label="Password"
-                  size="lg"
-                  required
-                />
-            </div>
-            
-            <div className="border bg-transparent border-[#B0BEC5] p-0 rounded-md">
-              <input
-                className="file-input bg-transparent cursor-pointer w-full"
-                type="file"
-                name="image"
-                id=""
-              />
-            </div>
+          <div className="relative">
+            <Input
+              min={10000}
+              max={99999}
+              maxLength={5}
+              className="z-0"
+              type={"number"}
+              name="pin"
+              label="5 - Digit Pin"
+              size="lg"
+              required
+            />
+          </div>
 
-            <div className="-ml-2.5">
-              <Checkbox
-                onClick={() => setRemember(!remember)}
-                label="Turms & Condition"
-              />
-            </div>
+          <Select onChange={(e) => setRole(e)} name="role" label="User Or Agent">
+            <Option value="user">User</Option>
+            <Option value="agent">Agent</Option>
+          </Select>
 
-            <div>
-              {remember ? (
-                <p></p>
-              ) : (
-                <p className="text-red-800 font-semibold">{errorText}</p>
-              )}
-            </div>
+          <div className="-ml-2.5">
+            <Checkbox
+              onClick={() => setRemember(!remember)}
+              label="Turms & Condition"
+            />
+          </div>
 
-              <div className="col-span-2">
-                <input  
-                  type="submit"
-                  className="w-full btn text-gray-800 hover:text-white btn-outline hover:bg-[#393939]"
-                  value={"Sign Up"}
-                />
-              </div>
-          </form>
+          <div>
+            {remember ? (
+              <p></p>
+            ) : (
+              <p className="text-red-800 play font-semibold">{errorText}</p>
+            )}
+          </div>
+
+          <div className="col-span-2">
+            <input
+              type="submit"
+              className="w-full btn text-gray-800 hover:text-white btn-outline hover:bg-[#393939]"
+              value={"Sign Up"}
+            />
+          </div>
+        </form>
       </CardBody>
 
       <CardFooter className="pt-0">
@@ -165,7 +145,6 @@ const SignUpC = ({remember , setRemember}) => {
         pauseOnHover
         theme="light"
       />
-
     </div>
   );
 };

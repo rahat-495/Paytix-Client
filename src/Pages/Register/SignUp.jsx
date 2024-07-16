@@ -18,7 +18,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const SignUp = () => {
 
     const [tabs , setTabs] = useState('signUp') ;
-    const [remember , setRemember] = useState(false) ;
 
     const data = [
         {
@@ -35,7 +34,7 @@ const SignUp = () => {
         <div className="mx-auto flex items-center justify-center flex-col min-h-screen">
             <div className="bg-white rounded-lg my-10">
                 
-                <Card className="w-96 gro pt-11 shadow-none border my-20 lg:my-0">
+                <Card className="w-96 gro pt-1 shadow-none border my-20 lg:my-0">
             
                 <Tabs value="signUp" className="">
 
@@ -64,7 +63,7 @@ const SignUp = () => {
                             <TabPanel key={value} value={value}>
                                 {
                                     value === 'login' ?
-                                    <LoginC location={location} /> :<SignUpC remember={remember} setRemember={setRemember}/>
+                                    <LoginC location={location} /> :<SignUpC/>
                                 }
                             </TabPanel>
                         ))}
