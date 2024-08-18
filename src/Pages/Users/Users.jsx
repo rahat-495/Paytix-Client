@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxioxSecure from "../../Hooks/useAxioxSecure";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { FaRotate } from "react-icons/fa6";
 
 const TABLE_HEAD = ["No.", "User Id", "Name" , "Email", "Phone", "Status", "Bounes", "Action"];
 
@@ -11,6 +12,7 @@ const Users = () => {
 
     const [name , setName] = useState('') ;
     const [phone , setPhone] = useState('') ;
+    const [reset , setReset] = useState('') ;
     const [activity , setActivity] = useState('') ;
     const axiosSecure = useAxioxSecure() ;
 
@@ -137,18 +139,28 @@ const Users = () => {
         }
     }
 
+    const handleReset = () => {
+        setName('') ;
+        setPhone('') ;
+        setActivity('') ;
+        setReset(false) ;
+    }
+
     return (
         <div className="min-h-[80vh] flex flex-col w-full mx-auto items-center justify-center">
             <div className="flex bg-[#D1D3D6] my-14 text-black gro px-10 py-10 rounded-lg w-4/5 flex-col items-center justify-center gap-3">
 
                 <div className="w-full grid grid-cols-3 gap-3">
-                    <Input onChange={(e) => setName(e.target.value)} color="black" label="Name" type="text" />
-                    <Input onChange={(e) => setPhone(e.target.value)} color="black" label="Phone" type="number" />
-                    <Select onChange={(e) => setActivity(e)} className="text-black" label="Active or Blocked">
-                        <Option value="all">All</Option>
-                        <Option value="active">Active</Option>
-                        <Option value="blocked">Blocked</Option>
-                    </Select>
+                    <Input value={name} onChange={(e) => setName(e.target.value)} color="black" label="Name" type="text" />
+                    <Input value={phone} onChange={(e) => setPhone(e.target.value)} color="black" label="Phone" type="number" />
+                    <div className="flex items-center gap-3">
+                        <Select value={activity} onChange={(e) => setActivity(e)} className="text-black" label="Active or Blocked">
+                            <Option value="all">All</Option>
+                            <Option value="active">Active</Option>
+                            <Option value="blocked">Blocked</Option>
+                        </Select>
+                        <button onClick={() => {handleReset() , setReset(true) , setTimeout(() => (setReset(false)) , 450)}} className="bg-transparent border px-3 py-3 rounded-lg hover:border-gray-500 duration-300">{ reset ? <FaRotate className="animate-spin"/> : <FaRotate /> }</button>
+                    </div>
                 </div>
 
                 <Card className="h-full w-full overflow-x-auto">
