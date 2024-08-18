@@ -1,8 +1,23 @@
-# React + Vite
+# Live Link
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+    https://gorgeous-souffle-d08577.netlify.app
 
-Currently, two official plugins are available:
+# Admin Data
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    Email : md@gmail.com
+    Phone : 01957564628
+    Pin   : 12345
+
+    
+# Agent Data
+
+    Email : jankar@gmail.com
+    Phone : 01408828613
+    Pin   : 12345
+
+    
+# User Data
+
+    Email : rifat@gmail.com
+    Phone : 01234567892
+    Pin   : 12345
