@@ -4,12 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import useAxiosCommon from "../../Hooks/useAxiosCommon";
+import GetUserData from "../../Hooks/GetUserData";
 
 const LoginC = () => {
 
     const navigate = useNavigate() ;
     const axiosCommon = useAxiosCommon() ;
+    const {refetch} = GetUserData() ;
     const [remember , setRemember] = useState(false) ;
+    const [loading , setLoading] = useState(false) ;
     const [errorText , setErrorText] = useState('') ;
 
     const handleSubmit = async (e) => {
@@ -23,11 +26,14 @@ const LoginC = () => {
           const {data} = await axiosCommon.post('/login' , {query : email , pin}) ;
           if(data?.success){
             const {data} = await axiosCommon.post('/jwt' , {email}) ;
+            setLoading(true) ;
             localStorage.setItem("token" , data?.token) ;
             toast.success("Login Success Fully !") ;
             setTimeout(() => {
-              navigate('/') ;
+              refetch() ;
+              navigate('/profile') ;
               if(data?.token){
+                setLoading(false) ;
                 window.location.reload() ;
               }
             } , 1000)
@@ -73,11 +79,16 @@ const LoginC = () => {
               )}
             </div>
 
-          <input
-            type="submit"
-            className="w-full btn text-gray-800 hover:text-white btn-outline hover:bg-[#393939]"
-            value={"Log In"}
-          />
+          {
+            loading ? 
+              <div className="w-full btn text-gray-800 hover:text-white btn-outline hover:bg-[#393939]"><span className="loading loading-infinity loading-md"></span></div>
+            : 
+              <input
+                type="submit"
+                className="w-full btn text-gray-800 hover:text-white btn-outline hover:bg-[#393939]"
+                value={"Log In"}
+              />
+          }
 
         </form>
       </CardBody>

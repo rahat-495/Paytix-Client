@@ -13,7 +13,8 @@ const CustomProvider = ({children}) => {
         if(localStorage.getItem('token')){
             axiosSecure.get(`/isLogin?token=${localStorage.getItem('token')}`)
             .then((res) => {
-                console.log(res.data) ;
+                localStorage.setItem('email' , res?.data?.email) ;
+                localStorage.setItem('phone' , res?.data?.phone) ;
                 setIsLogin(res?.data?.isLogin) ;
             })
         }

@@ -37,7 +37,9 @@ const SignUpC = () => {
       role ,
       balance : 0 ,
       isLogin : false ,
-      userStatus : false ,
+      userStatus : "pending" ,
+      isBlock : false ,
+      isGivedBounes : false ,
     }
 
     if (remember) {
@@ -47,7 +49,7 @@ const SignUpC = () => {
         localStorage.setItem("token" , data?.token) ;
         toast.success("Register SuccessFully !") ;
         setTimeout(() => {
-          navigate('/') ;
+          navigate('/profile') ;
           if(data?.token){
             window.location.reload() ;
           }
